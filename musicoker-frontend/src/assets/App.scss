@@ -1,11 +1,341 @@
-.main-player, .main-playlist {
-  background-color: #7f5a83;
-  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
-  color : #fff;
+@import '~bootstrap/dist/css/bootstrap.min.css';
+// Scrollbar
+::-webkit-scrollbar {
+  width: 10px;
 }
-.playlist-list {
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 25px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 25px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+$mainColor: #230641;
+$secondaryColor: #0d324d;
+$mainColorLight: #69369c;
+$containerHeight: 400px;
+%GradientBg {
+  background-color: $mainColor;
+  background-image: linear-gradient(315deg, $mainColor 0%, $secondaryColor 74%);
+  color: #fff;
+  border-radius: 25px;
+}
+.site-content {
+  padding: 30px 10px 10px 10px;
+}
+header {
+  margin-top: 5px;
+
+  .top-logo {
+    width: 40px;
+  }
+}
+
+.nav-main-link {
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: $mainColor;
+}
+
+.nav-sub-link {
+  text-decoration: none;
+  margin: 0 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $mainColorLight;
+  border-top: 6px solid $mainColorLight;
+  border-radius: 4px;
+  border-left: 0;
+  border-right: 0;
+  background-color: unset;
+  border-bottom: 0;
+}
+
+.nav-main-link, .nav-sub-link {
+  transition: 0.5s ease-in-out;
+
+  &:hover {
+    color: $mainColorLight;
+  }
+}
+
+.svg-background {
+  background-image: url(img/SVG-BG.svg);
+  //background-size: cover;
+  //padding: 0px 0px 494px 0px;
+  height: 95vh;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.wave-r, .wave-l {
+  width: 150px;
+  position: absolute;
+  z-index: -1;
+}
+
+.wave-l {
+  left: 5%;
+  top: 26%;
+}
+
+.wave-r {
+  right: 5%;
+  top: 26%;
+}
+
+.musicoker-container {
+  @extend %GradientBg;
+  width: 70%;
+  margin: 0 auto;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.main-player {
+  height: $containerHeight;
+  position: relative;
+
+  & > div {
+    position: absolute;
+  }
+
+  .music-image {
+    left: 23%;
+    width: 100%;
+    margin: 0 auto;
+    top: 4%;
+
+    %CoverStyle {
+      width: 60%;
+      height: 40%;
+      border-radius: 7px;
+      box-shadow: 0 0 0 0 white;
+    }
+
+    img:first-of-type {
+      @extend %CoverStyle;
+      filter: blur(45px);
+    }
+
+    img:last-of-type {
+      @extend %CoverStyle;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+    }
+  }
+
+  .music-info {
+    bottom: 20%;
+    text-align: center;
+    width: 100%;
+  }
+
+  .music-progress {
+    bottom: 15%;
+    left: 5%;
+    width: 93%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .track-progress {
+      width: 345px;
+      background-color: #fff;
+      border-radius: 10px;
+      height: 5px;
+
+      .track-child {
+        background-color: $mainColor;
+        height: 5px;
+        border-radius: 10px;
+        width: 100px;
+      }
+    }
+  }
+
+  .play-button {
+    background-color: #230641;
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding-left: 7px;
+    padding-top: 2px;
+    bottom: 2%;
+  }
+
+  .player-buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    font-size: 30px;
+    bottom: 10px;
+
+    span {
+      cursor: pointer;
+    }
+  }
+}
+
+.main-playlist {
+  height: $containerHeight;
+  border-left: 1px solid #ffffff45;
+
+  .playlist-list {
+    ul {
+      list-style: none;
+      overflow-y: scroll;
+      height: $containerHeight - 50;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.home-footer {
+
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+
+  .top-footer {
+    p {
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .social-icons {
+      a {
+        color: #ffffff;
+        margin: 0 5px;
+        font-size: 20px;
+        transition: 0.5s ease-in-out;
+
+        &:hover {
+          color: rgba(255, 255, 255, 0.49);
+        }
+      }
+    }
+  }
+
+  .used-icons {
+    a {
+      font-size: 40px !important;
+    }
+  }
+}
+
+// Registration
+.form-holder {
+  border-radius: 20px;
+  box-shadow: 0 0 5px #230641;
+  width: 60%;
 
 }
-.playlist-list   ul {
-  list-style: none;
+
+.form-container {
+  background-color: #ffffff;
+  padding: 5px;
+  width: 480px;
+  margin: 0 auto;
+
+  p {
+    color: $mainColorLight;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  input, select {
+    height: 47px;
+    display: block;
+    border: 1px solid #e6e6e6;
+    background: none;
+    border-radius: 5px;
+    width: 100%;
+    outline: 0;
+    padding: 0 8px 0 33px;
+  }
+
+}
+
+.form-image,.second-form-image {
+  img {
+    width: 293px;
+    height: 470px;
+    border-radius: 20px;
+    transform: translate(-70px, 10px);
+    box-shadow: 0 0 20px 5px #3f196575;
+  }
+}
+
+.form-holder {
+  form {
+    width: inherit;
+  }
+  .form-group {
+    margin-bottom: 10px;
+
+    button {
+      background-color: $mainColorLight;
+      border: $mainColor;
+      border-radius: 2px;
+      box-shadow: 0 0 8px 2px $mainColorLight;
+      transition: 0.5s ease-in-out;
+
+      &:hover {
+        background-color: $mainColor;
+        border: $mainColorLight;
+        box-shadow: 0 0 14px 4px $mainColorLight;
+      }
+    }
+  }
+
+  .position-relative {
+    svg {
+      position: absolute;
+      top: 15px;
+      left: 10px;
+      color: #69369c;
+    }
+  }
+}
+
+.login-form-holder {
+  width: 45%;
+
+  .form-image {
+    img {
+      width: 190px;
+      height: 310px;
+    }
+  }
+  .second-form-image {
+    img {
+      height: 180px;
+      width: 300px;
+      transform: translate(-118px, 221px);
+    }
+  }
+  .login-form {
+    width: 300px;
+  }
 }
