@@ -2,6 +2,7 @@ import React from "react";
 import "./assets/App.css";
 import {BrowserRouter, Routes, Navigate, Route} from "react-router-dom";
 import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 import Login from "./Components/views/Login"
 import Register from "./Components/views/Register"
 import Home from "./Components/views/Home"
@@ -25,14 +26,13 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <Header/>
-                <div className="site-content">
                     <Routes>
                         <Route exact path="/" element={<Home/>}/>
                         <Route path="/login" element={localStorage.getItem('auth_token') ? <Navigate to='/'/>  : <Login/> }/>
                         <Route path="/register" element={localStorage.getItem('auth_token') ? <Navigate to='/'/>  : <Register/> }/>
                         <Route path="/song/create" element={localStorage.getItem('auth_token') ? <AddSong/> : <Navigate to='login'/>  }/>
                     </Routes>
-                </div>
+                <Footer/>
             </BrowserRouter>
 
         </div>

@@ -19,6 +19,7 @@ class CreateSongsTable extends Migration
             $table->string('name')->nullable();
             $table->string('hash_key')->nullable();
             $table->string('length')->nullable();
+            $table->string('current_length')->default('00:00:00.000');
             $table->string('album')->nullable();
             $table->string('album_artist')->nullable();
             $table->string('size')->nullable();

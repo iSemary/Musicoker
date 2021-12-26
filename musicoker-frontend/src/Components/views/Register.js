@@ -2,7 +2,7 @@ import React, {Component, useState} from 'react';
 import RegisterImage from '../../assets/img/register.png'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import axios from 'axios'
-import {useNavigate} from 'react-router-dom'
+import {BrowserRouter, useNavigate} from 'react-router-dom'
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {
     faLock, faEnvelope, faAt, faMale, faFemale, faBirthdayCake, faIdCard
@@ -59,6 +59,8 @@ function Register() {
     }
 
     return (
+        <div className="site-content">
+
         <div className="form-holder container mt-2 d-flex p-3">
             <div className="form-image">
                 <img src={RegisterImage} alt=""/>
@@ -155,6 +157,7 @@ function Register() {
                     </div>
                 </form>
             </div>
+        </div>
         </div>
     )
 }

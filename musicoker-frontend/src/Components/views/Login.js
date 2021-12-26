@@ -7,7 +7,7 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {
     faAt, faLock
 } from "@fortawesome/free-solid-svg-icons";
-import {useNavigate} from "react-router-dom";
+import {BrowserRouter, useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 
 library.add(faLock, faAt);
@@ -66,6 +66,8 @@ function Login() {
         });
     }
     return (
+        <div className="site-content">
+
         <div className="form-holder login-form-holder container mt-2 d-flex p-3">
             <div className="form-image">
                 <img src={LoginImage1} alt=""/>
@@ -103,6 +105,7 @@ function Login() {
             <div className="second-form-image">
                 <img src={LoginImage2} alt=""/>
             </div>
+        </div>
         </div>
     );
 }

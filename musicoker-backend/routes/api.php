@@ -13,6 +13,8 @@ Route::middleware('auth:sanctum')->group(function (){
 });
 
 Route::post('/song/store', [SongController::class, 'store']);
+Route::get('/songs', [SongController::class, 'index']);
+Route::get('/song/latest', [SongController::class, 'latest_song']);
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
