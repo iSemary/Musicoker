@@ -1,5 +1,5 @@
 
-<img src="logo.svg" width="50"/><span style="font-size:30px;color:#4C2276"> Musicoker | Music Player<span/>
+<img src="Logo.svg" width="50"/><span style="font-size:30px;color:#4C2276"> Musicoker | Music Player<span/>
 <img src="Preview.gif" width="500"/>
 
 #### Music player created with Laravel 8 and React 17.0.2
