@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import DefaultImg from '../assets/img/default.jpg'
+import Box from '@mui/material/Box';
+import LinearProgress from "@material-ui/core/LinearProgress";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {
@@ -22,47 +24,26 @@ import axios from "axios";
 
 library.add(faList, faStop, faAngleDoubleLeft, faAngleDoubleRight, faStepForward, faVolumeDown, faStepBackward, faUndoAlt, faVolumeOff, faVolumeMute, faVolumeUp, faCompactDisc, faPause, faPlay);
 
-export default function Player({nextSong}) {
-    console.log(nextSong);
+export default function Player({Song, CurrentSong}) {
+    // console.log(nextSong);
 
     const [loading, setLoading] = useState(true);
-    const [Song, setSong] = useState('http://localhost:8000/uploads/songs/c2dba4184e6b8c0742e061f465abaf7c.m4a');
     const [PlayerSettings, setPlayer] = useState({
         playing: true,
-        volume: 0,
+        volume: 0.5,
         current_length: 0,
         duration: 0,
         volume_bar: false
     });
-    const [CurrentSong, setCurrentSong] = useState({
-        name: '',
-        id: '',
-        hash_key: '',
-        album: '',
-        album_artist: '',
-        length: '',
-        current_length: '',
-        image: '',
-        size: '',
-        playedTime: 0,
-        song: '',
-    });
+    const player = new Audio(Song);
 
-    let player = new Audio(Song);
 
-    function PlayerSliderInterval(status) {
-        function TheInterval() {
-            setPlayer({...PlayerSettings, current_length: player.currentTime});
-        }
 
-        let CurrentInterval = setInterval(TheInterval, 500);
-        if (!status) {
-            clearInterval(CurrentInterval)
-        }
-    }
+    const skipTrackHandler = async (direction) => {
+        await console.log("Ok");
+    };
 
     function playSong() {
-        setPlayer({...PlayerSettings, duration: player.duration});
         var playPromise = player.play()
         if (playPromise !== undefined) {
             playPromise.then(function () {
@@ -70,8 +51,11 @@ export default function Player({nextSong}) {
                 console.log(error)
             });
         }
-        PlayerSliderInterval(true)
+
     }
+
+
+
 
     function stopSong() {
         player.pause()
@@ -80,12 +64,18 @@ export default function Player({nextSong}) {
 
     function pauseSong() {
         player.pause()
-        // PlayerSliderInterval(false)
     }
+
+    // function prevSong() {
+    //     alert
+    // }
+    //
+    // function nextSong() {
+    //     alert
+    // }
 
     function AddSeconds() {
         player.currentTime += 10;
-
     }
 
     function RemoveSeconds() {
@@ -100,11 +90,11 @@ export default function Player({nextSong}) {
         if (PlayerSettings.volume === 1) {
             player.muted = true;
             setPlayer({...PlayerSettings, volume: 0});
-            console.log("FIRST CONDITION" + player.volume)
+            // console.log("FIRST CONDITION" + player.volume)
         } else {
             player.muted = false;
             setPlayer({...PlayerSettings, volume: 1});
-            console.log("SECOND CONDITION" + player.volume)
+            // console.log("SECOND CONDITION" + player.volume)
         }
     }
 
@@ -132,22 +122,17 @@ export default function Player({nextSong}) {
     function handleVolume(e) {
         setPlayer({...PlayerSettings, volume: e.target.value / 100})
         player.volume = PlayerSettings.volume
-        console.log('Player Volume: ' + player.volume + 'PlayerSettings Volume:' + PlayerSettings.volume)
+        // console.log('Player Volume: ' + player.volume + 'PlayerSettings Volume:' + PlayerSettings.volume)
     }
 
     useEffect(() => {
-        axios.get('/api/song/latest').then(res => {
-            if (res.data.status === 200) {
-                setCurrentSong(res.data.song);
-                setSong(`http://localhost:8000${res.data.song.hash_key}`);
-                setLoading(false);
-            }
-        })
+        setLoading(false);
     }, []);
+
     if (loading) {
         return (<div className="col-6 p-0">
-            <div className="main-playlist p-2">
-                <h4 className="text-light text-center">Loading... Please Wait</h4>
+            <div className="main-player p-2 ">
+                    <LinearProgress/>
             </div>
         </div>)
     }
@@ -163,9 +148,6 @@ export default function Player({nextSong}) {
                 <div className="music-info">
                     <h5 className="m-0">{CurrentSong.name.replace(/\.[^/.]+$/, "")}</h5>
                     <p>{CurrentSong.album_artist}</p>
-                    <p>
-                        {nextSong ?? "NO DATA NOW"}
-                    </p>
                 </div>
                 <div className="music-progress">
                         <span>
@@ -182,7 +164,7 @@ export default function Player({nextSong}) {
                         </span>
                 </div>
                 <div className="player-buttons">
-                    <span><FontAwesomeIcon icon="step-backward"/></span>
+                    <span><FontAwesomeIcon icon="step-backward" /></span>
                     <span><FontAwesomeIcon onClick={pauseSong} icon="pause"/></span>
                     <span><FontAwesomeIcon icon="undo-alt" onClick={reSong}/></span>
                     <span><FontAwesomeIcon icon="angle-double-left" onClick={RemoveSeconds}/></span>
@@ -203,5 +185,5 @@ export default function Player({nextSong}) {
                 </div>
             </div>
         </div>
-    );
+);
 }

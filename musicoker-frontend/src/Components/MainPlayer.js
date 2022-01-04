@@ -10,7 +10,6 @@ function MainPlayer() {
                 <div className="musicoker-container">
                     <img src={Wave} className="wave-l" alt=""/>
                     <div className="row">
-                        <Player/>
                         <Playlist/>
                     </div>
                     <img src={Wave} className="wave-r" alt=""/>

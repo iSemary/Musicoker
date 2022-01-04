@@ -1,5 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import Player from "./Player";
+import Box from '@mui/material/Box';
+import LinearProgress from "@material-ui/core/LinearProgress";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import DefaultImg from '../assets/img/default.jpg';
@@ -9,14 +11,30 @@ library.add(faList);
 const axios = require('axios');
 
 function Playlist() {
-
     const PlaylistSongs = useRef({});
 
-    const [loading, setLoading] = useState(true);
+    const [Playlistloading, setPlaylistLoading] = useState(true);
     const [songs, setSongs] = useState([]);
 
+    const [Song, setSong] = useState('http://localhost:8000/uploads/songs/c2dba4184e6b8c0742e061f465abaf7c.m4a');
+    const [CurrentSong, setCurrentSong] = useState({
+        name: '',
+        id: '',
+        hash_key: '',
+        album: '',
+        album_artist: '',
+        length: '',
+        current_length: '',
+        image: '',
+        size: '',
+        playedTime: 0,
+        song: '',
+    });
+
+
+
     const PlayNow = (index) => {
-        let nextSong = PlaylistSongs.current[index].dataset.url;
+        let songData = PlaylistSongs.current[index].dataset;
 
         let allList = document.querySelectorAll('.playlist-list-content li');
         for (let x = 0; x < allList.length; x++)
@@ -24,35 +42,49 @@ function Playlist() {
 
         PlaylistSongs.current[index].style.background = '#4b4b8963'
 
-        // console.log(pressedSong)
-
-        return <Player nextSong="OKAY"/>;
+        setCurrentSong({
+            ...CurrentSong,
+            name: document.querySelectorAll('.playlist-list-content li')[index].childNodes[1].childNodes[0].textContent,
+            album_artist: document.querySelectorAll('.playlist-list-content li')[index].childNodes[1].childNodes[1].textContent,
+            length: document.querySelectorAll('.playlist-list-content li')[index].childNodes[2].textContent,
+            image: songData.image,
+        });
+        setSong(songData.url);
     }
 
     useEffect(() => {
         axios.get('/api/songs').then(res => {
             if (res.data.status === 200) {
                 setSongs(res.data.songs);
-                setLoading(false);
             }
         });
+
     }, []);
+    useEffect(()=>{
+        axios.get('/api/song/latest').then(res => {
+            if (res.data.status === 200) {
+                setCurrentSong(res.data.song);
+                setSong(`http://localhost:8000${res.data.song.hash_key}`);
+                setPlaylistLoading(false);
+            }
+        })
+    },[]);
 
     let display_playlist = "";
-    if (loading) {
+    if (Playlistloading) {
         return (<div className="col-6 p-0">
             <div className="main-playlist p-2">
-                <h4 className="text-light text-center">Loading... Please Wait</h4>
+                    <LinearProgress />
             </div>
         </div>)
     } else {
         display_playlist = songs.map((song, index) => {
             return (
                 <li key={song.id} onClick={() => PlayNow(index)} ref={el => (PlaylistSongs.current[index] = el)}
-                    data-url={`http://localhost:8000` + song.hash_key}>
+                    data-url={`http://localhost:8000` + song.hash_key} data-image={song.image}>
                     <span><img src={song.image ? `http://localhost:8000` + song.image : DefaultImg} alt=""/></span>
                     <span>
-                        {song.name.replace(/\.[^/.]+$/, "")}<br/>
+                        <span className="d-block">{song.name.replace(/\.[^/.]+$/, "")}</span>
                         <span className="text-muted">{song.album_artist}</span>
                     </span>
                     <span>{song.length.replace(/\.[^/.]+$/, "")}</span>
@@ -63,13 +95,14 @@ function Playlist() {
 
     return (
         <React.Fragment>
+            <Player Song={Song} CurrentSong={CurrentSong}/>
             <div className="col-6 p-0">
                 <div className="main-playlist p-2">
                     <h6 className="text-center">
                         <FontAwesomeIcon icon="list"/>&nbsp;Playlist</h6>
                     <div className="playlist-list">
                         <ul className="playlist-list-content">
-                            {display_playlist}
+                            {display_playlist ?? ""}
                         </ul>
                     </div>
                 </div>
